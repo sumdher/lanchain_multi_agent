@@ -1,3 +1,5 @@
 .assets
 .venv
 .env
+data
+langchain-academy-main

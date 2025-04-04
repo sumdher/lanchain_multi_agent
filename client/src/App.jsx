@@ -82,14 +82,14 @@ export default function App() {
 
       <div className="main">
         <header className="header">
-          <h1 className="header-title">DeepSeek V3 LLM</h1>
+          <h1 className="header-title">DeepSeek-V3 LLM</h1>
         </header>
 
         <main className="chat-area">
           {!isConnected ? (
             <div className="connect-screen">
               <button className="connect-button" onClick={connectToLangGraph}>
-                Connect to LangGraph
+                Connect to DeepSeek-V3
               </button>
             </div>
           ) : (

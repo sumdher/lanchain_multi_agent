@@ -7,10 +7,12 @@ export default function App() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   const connectToLangGraph = () => {
+    setIsConnecting(true);
     const socket = new WebSocket("ws://127.0.0.1:4580/ws/chat");
     socketRef.current = socket;
 
@@ -49,11 +51,17 @@ export default function App() {
     socket.onopen = () => {
       console.log("✅ WebSocket connected");
       setIsConnected(true);
+      setIsConnecting(false);
     };
 
     socket.onclose = () => {
       console.log("❌ WebSocket closed");
       setIsConnected(false);
+      setIsConnecting(false);
+    };
+
+    socket.onerror = () => {
+      setIsConnecting(false);
     };
   };
 
@@ -88,29 +96,42 @@ export default function App() {
         <main className="chat-area">
           {!isConnected ? (
             <div className="connect-screen">
-              <button className="connect-button" onClick={connectToLangGraph}>
-                Connect to DeepSeek-V3
+              <button
+                className={`connect-button ${isConnecting ? 'connecting' : ''}`}
+                onClick={connectToLangGraph}
+                disabled={isConnecting}
+              >
+                {isConnecting ? 'Connecting...' : 'Connect to DeepSeek-V3'}
               </button>
             </div>
           ) : (
             <>
-            <div className="messages-wrapper">  
-              <div className="messages">
-                {messages.map((msg, i) => (
-                  <div key={i} className={`message-row ${msg.from}`}>
-                    <div className={`message-bubble ${msg.from}`}>
-                      {msg.from === "bot" ? (
-                        <ReactMarkdown>{msg.text}</ReactMarkdown>
-                      ) : (
-                        msg.text
-                      )}
+              <div className="messages-wrapper">
+                <div className="messages">
+                  {/* Welcome message */}
+                  {messages.length === 0 && (
+                    <div className="message-row bot">
+                      <div className="message-bubble bot welcome-message">
+                        <ReactMarkdown>{"**What can I help with today?**\n\nAsk me anything, and I'll do my best to assist you!"}</ReactMarkdown>
+                      </div>
                     </div>
-                  </div>
-                ))}
-                {isTyping && <div className="typing">Bot is typing...</div>}
-                <div ref={messagesEndRef} />
+                  )}
+
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`message-row ${msg.from}`}>
+                      <div className={`message-bubble ${msg.from}`}>
+                        {msg.from === "bot" ? (
+                          <ReactMarkdown>{msg.text}</ReactMarkdown>
+                        ) : (
+                          msg.text
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {isTyping && <div className="typing">Bot is typing...</div>}
+                  <div ref={messagesEndRef} />
+                </div>
               </div>
-            </div>
               <div className="input-area">
                 <input
                   className="input-field"
@@ -129,5 +150,4 @@ export default function App() {
       </div>
     </div>
   );
-
 }

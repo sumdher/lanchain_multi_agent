@@ -54,7 +54,7 @@ async def chat_websocket(websocket: WebSocket):
                 if msg:
                     await websocket.send_text(msg)
 
-            await websocket.send_text("[[END]]")  # signal end of one response
+            await websocket.send_text("[[END]]")  # end of one response
 
     except WebSocketDisconnect:
         print("WebSocket closed by client")

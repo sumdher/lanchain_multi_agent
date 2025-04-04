@@ -46,8 +46,6 @@ export default function App() {
       setIsTyping(true);
     };
 
-
-
     socket.onopen = () => {
       console.log("✅ WebSocket connected");
       setIsConnected(true);
@@ -74,7 +72,7 @@ export default function App() {
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <h2 className="sidebar-title">🧠 LangGraph</h2>
+        <h2 className="sidebar-title">🧠 Chat skibidi</h2>
         <nav className="sidebar-nav">
           <a href="#">Chat</a>
           <a href="#">Modes</a>
@@ -84,7 +82,7 @@ export default function App() {
 
       <div className="main">
         <header className="header">
-          <h1 className="header-title">LangGraph Chatbot</h1>
+          <h1 className="header-title">DeepSeek V3 LLM</h1>
         </header>
 
         <main className="chat-area">
@@ -96,6 +94,7 @@ export default function App() {
             </div>
           ) : (
             <>
+            <div className="messages-wrapper">  
               <div className="messages">
                 {messages.map((msg, i) => (
                   <div key={i} className={`message-row ${msg.from}`}>
@@ -106,13 +105,12 @@ export default function App() {
                         msg.text
                       )}
                     </div>
-
                   </div>
                 ))}
                 {isTyping && <div className="typing">Bot is typing...</div>}
                 <div ref={messagesEndRef} />
               </div>
-
+            </div>
               <div className="input-area">
                 <input
                   className="input-field"
@@ -131,4 +129,5 @@ export default function App() {
       </div>
     </div>
   );
+
 }

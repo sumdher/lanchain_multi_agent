@@ -135,6 +135,21 @@ body {
   color: var(--text-primary);
 }
 
+/* Add the new paragraph spacing here */
+.message-bubble.bot p {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  line-height: 1.4;
+}
+
+.message-bubble.bot p:first-child {
+  margin-top: 0;
+}
+
+.message-bubble.bot p:last-child {
+  margin-bottom: 0;
+}
+
 .message-bubble.user {
   background-color: #444;
   border-radius: 0.5rem;

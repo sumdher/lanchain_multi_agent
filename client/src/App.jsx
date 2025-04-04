@@ -1,34 +1,70 @@
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import './index.css';
 
-function App() {
+export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-  // Establish WebSocket connection
-  useEffect(() => {
-    const socket = new WebSocket("ws://localhost:4580/ws/chat");
+  const connectToLangGraph = () => {
+    const socket = new WebSocket("ws://127.0.0.1:4580/ws/chat");
     socketRef.current = socket;
 
+    let botBuffer = "";
+
     socket.onmessage = (event) => {
-      if (event.data === "[[END]]") {
+      const chunk = event.data;
+
+      if (chunk === "[[END]]") {
         setIsTyping(false);
         return;
       }
 
-      setMessages((prev) => [...prev, { from: "bot", text: event.data }]);
+      botBuffer += chunk;
+
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+
+        if (last?.from === "bot") {
+          // Append new chunk to existing bot message
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            ...last,
+            text: last.text + chunk,
+          };
+          return updated;
+        } else {
+          // New bot message starts here
+          return [...prev, { from: "bot", text: chunk }];
+        }
+      });
+
+      setIsTyping(true);
     };
 
-    socket.onopen = () => console.log("✅ WebSocket connected");
-    socket.onclose = () => console.log("❌ WebSocket closed");
 
-    return () => socket.close();
-  }, []);
+
+    socket.onopen = () => {
+      console.log("✅ WebSocket connected");
+      setIsConnected(true);
+    };
+
+    socket.onclose = () => {
+      console.log("❌ WebSocket closed");
+      setIsConnected(false);
+    };
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = () => {
-    if (!input.trim()) return;
-
+    if (!input.trim() || socketRef.current.readyState !== 1) return;
     setMessages((prev) => [...prev, { from: "user", text: input }]);
     socketRef.current.send(input);
     setInput("");
@@ -36,44 +72,63 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 flex flex-col space-y-4">
-        <h1 className="text-xl font-bold">🧠 LangGraph Chatbot</h1>
+    <div className="app-container">
+      <aside className="sidebar">
+        <h2 className="sidebar-title">🧠 LangGraph</h2>
+        <nav className="sidebar-nav">
+          <a href="#">Chat</a>
+          <a href="#">Modes</a>
+          <a href="#">Settings</a>
+        </nav>
+      </aside>
 
-        <div className="flex-1 overflow-y-auto max-h-[60vh] space-y-2">
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`p-3 max-w-[80%] rounded-lg ${
-                msg.from === "user"
-                  ? "bg-blue-100 self-end ml-auto"
-                  : "bg-green-100 self-start mr-auto"
-              }`}
-            >
-              {msg.text}
+      <div className="main">
+        <header className="header">
+          <h1 className="header-title">LangGraph Chatbot</h1>
+        </header>
+
+        <main className="chat-area">
+          {!isConnected ? (
+            <div className="connect-screen">
+              <button className="connect-button" onClick={connectToLangGraph}>
+                Connect to LangGraph
+              </button>
             </div>
-          ))}
-          {isTyping && <div className="text-sm text-gray-500">Bot is typing...</div>}
-        </div>
+          ) : (
+            <>
+              <div className="messages">
+                {messages.map((msg, i) => (
+                  <div key={i} className={`message-row ${msg.from}`}>
+                    <div className={`message-bubble ${msg.from}`}>
+                      {msg.from === "bot" ? (
+                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                      ) : (
+                        msg.text
+                      )}
+                    </div>
 
-        <div className="flex space-x-2">
-          <input
-            className="flex-1 border border-gray-300 p-2 rounded"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Say something..."
-          />
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-            onClick={sendMessage}
-          >
-            Send
-          </button>
-        </div>
+                  </div>
+                ))}
+                {isTyping && <div className="typing">Bot is typing...</div>}
+                <div ref={messagesEndRef} />
+              </div>
+
+              <div className="input-area">
+                <input
+                  className="input-field"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  placeholder="Type your message..."
+                />
+                <button className="send-button" onClick={sendMessage}>
+                  Send
+                </button>
+              </div>
+            </>
+          )}
+        </main>
       </div>
     </div>
   );
 }
-
-export default App;

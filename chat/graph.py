@@ -71,9 +71,10 @@ def init_graph(tid: str, sys_msg: str | None = None, human_msg: str | None = Non
     config: RunnableConfig = {"configurable": {"thread_id": tid}}
 
     if sys_msg:
-        graph.invoke({"messages": [SystemMessage(content=sys_msg)]}, config)
+        graph.ainvoke({"messages": [SystemMessage(content=sys_msg)]}, config)
     if human_msg:
-        graph.invoke({"messages": [HumanMessage(content=human_msg)]}, config)
+        graph.ainvoke({"messages": [HumanMessage(content=human_msg)]}, config)
 
     return graph
+
 

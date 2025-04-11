@@ -148,13 +148,13 @@ export default function App() {
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                   placeholder="Type your message..."
                 />
-                  <button
-                    className="send-button"
-                    onClick={isTyping ? stopAI : sendMessage}
-                    disabled={!input.trim() && !isTyping}
-                  >
-                    {isTyping ? "Stop" : "Send"}
-                  </button>
+                <button
+                  className="send-button"
+                  onClick={isTyping ? stopAI : sendMessage}
+                  disabled={!input.trim() && !isTyping}
+                >
+                  {isTyping ? "Stop" : "Send"}
+                </button>
 
               </div>
             </>

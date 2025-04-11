@@ -14,11 +14,10 @@ from langgraph.graph import StateGraph
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_experimental.utilities import PythonREPL
 from langchain_deepseek import ChatDeepSeek
 from langchain_core.tools import tool
 from langchain_core.runnables.config import RunnableConfig
+from chat.tools import lcel_codegen, python_repl, tavily_search_tool
 
 load_dotenv()
 
@@ -29,25 +28,11 @@ class PydanticState(BaseModel):
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
-@tool
-def python_repl(code: str) -> str:
-    """
-    Execute safe Python code using an in-memory REPL.
-    """
-    repl = PythonREPL()
-    try:
-        result = repl.run(code)
-    except BaseException as e:
-        print  (f"Failed to execute. Error: {repr(e)}")
-        # Rewrite the code and rerun it
-    return f"{result}"
-
 def init_graph(tid: str, sys_msg: str | None = None, human_msg: str | None = None) -> CompiledStateGraph:
     memory = MemorySaver()
     graph_builder = StateGraph(PydanticState)
 
-    search_tool = TavilySearchResults(max_results=1)
-    tools = [search_tool, python_repl]
+    tools = [tavily_search_tool, python_repl, lcel_codegen]
 
     llm = ChatDeepSeek(
         model="deepseek-chat",

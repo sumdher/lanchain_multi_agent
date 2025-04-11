@@ -65,22 +65,30 @@ export default function App() {
     };
   };
 
+  const stopAI = () => {
+    if (socketRef.current && socketRef.current.readyState === 1) {
+      socketRef.current.send("__STOP__");
+      setIsTyping(false);
+    }
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
-    if (!input.trim() || socketRef.current.readyState !== 1) return;
+    if (!input.trim() || isTyping || socketRef.current.readyState !== 1) return;
     setMessages((prev) => [...prev, { from: "user", text: input }]);
     socketRef.current.send(input);
     setInput("");
     setIsTyping(true);
   };
 
+
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <h2 className="sidebar-title">🧠 Chat skibidi</h2>
+        <h2 className="sidebar-title">🧠 Chat SkiBiDi</h2>
         <nav className="sidebar-nav">
           <a href="#">Chat</a>
           <a href="#">Modes</a>
@@ -140,9 +148,14 @@ export default function App() {
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                   placeholder="Type your message..."
                 />
-                <button className="send-button" onClick={sendMessage}>
-                  Send
-                </button>
+                  <button
+                    className="send-button"
+                    onClick={isTyping ? stopAI : sendMessage}
+                    disabled={!input.trim() && !isTyping}
+                  >
+                    {isTyping ? "Stop" : "Send"}
+                  </button>
+
               </div>
             </>
           )}

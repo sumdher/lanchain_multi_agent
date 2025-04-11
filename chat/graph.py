@@ -38,7 +38,8 @@ def python_repl(code: str) -> str:
     try:
         result = repl.run(code)
     except BaseException as e:
-        return f"Failed to execute. Error: {repr(e)}"
+        print  (f"Failed to execute. Error: {repr(e)}")
+        # Rewrite the code and rerun it
     return f"{result}"
 
 def init_graph(tid: str, sys_msg: str | None = None, human_msg: str | None = None) -> CompiledStateGraph:
@@ -75,3 +76,4 @@ def init_graph(tid: str, sys_msg: str | None = None, human_msg: str | None = Non
         graph.invoke({"messages": [HumanMessage(content=human_msg)]}, config)
 
     return graph
+

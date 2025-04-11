@@ -1,4 +1,5 @@
 # server.py
+# uvicorn server:app --reload --port 4580
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -58,3 +59,4 @@ async def chat_websocket(websocket: WebSocket):
 
     except WebSocketDisconnect:
         print("WebSocket closed by client")
+

@@ -15,7 +15,7 @@ export default function CodeBlock({ language = "text", value = "" }) {
     return (
         <div style={{
             margin: "1.5em 0",
-            borderRadius: "8px",
+            borderRadius: "20px",
             overflow: "hidden",
             border: "1px solid #30363d",
             background: "#0d1117"
@@ -29,8 +29,9 @@ export default function CodeBlock({ language = "text", value = "" }) {
                 backgroundColor: "#161b22",
                 borderBottom: "1px solid #30363d",
                 color: "#c9d1d9",
-                fontSize: "0.75rem",
+                fontSize: "1rem",
                 fontFamily: "monospace",
+                paddingLeft: "20px"
             }}>
                 <span>{language}</span>
                 <button
@@ -39,7 +40,7 @@ export default function CodeBlock({ language = "text", value = "" }) {
                         background: "transparent",
                         color: "#d9d9d9",
                         border: "none",
-                        fontSize: "0.75rem",
+                        fontSize: "0.8rem",
                         cursor: "pointer",
                         padding: "2px 6px",
                     }}
@@ -55,7 +56,7 @@ export default function CodeBlock({ language = "text", value = "" }) {
                 customStyle={{
                     margin: 0,
                     padding: "1rem",
-                    fontSize: "0.85rem",
+                    fontSize: "01.2rem",
                     lineHeight: "1.5",
                     background: "transparent",
                 }}

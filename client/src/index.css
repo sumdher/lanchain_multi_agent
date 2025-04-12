@@ -10,7 +10,7 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family:  'Open Sans', 'Inter', 'Segoe UI', 'Arial', sans-serif;
   background-color: var(--background-dark);
   color: var(--text-primary);
   line-height: 1.6;
@@ -35,13 +35,12 @@ body {
 
 .sidebar-title {
   margin: 0;
-  padding: 0 0 3rem 0;
-  font-size: 1.5rem;
+  padding: 1rem 0 3rem 0;
+  font-size: 1.7rem;
   font-weight: bold;
   color: var(--primary-color);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .sidebar-nav a {
@@ -68,6 +67,7 @@ body {
   min-width: 0;
   position: relative;
   overflow-y: auto;
+  background-color: var(--background-kinda-dark);
 }
 
 .header {
@@ -83,10 +83,10 @@ body {
 .header-title {
   color: var(--primary-color);
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.55rem;
   margin: 0;
-  padding-bottom: 0.5%;
-  padding-top: 0.5%;
+  padding-bottom: 0%;
+  padding-top: 0%;
 }
 
 .chat-area {
@@ -94,7 +94,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 840px;
+  max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
@@ -123,25 +123,41 @@ body {
 }
 
 .message-bubble {
-  max-width: min(95%, 700px);
+  max-width: min(100%, 1000px);
+  font-family: inherit; 
   white-space: pre-wrap;
   word-break: break-word;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  font-size: 1.1rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  letter-spacing: 0.05rem;
+
+  font-weight: 600;
+  line-height: 0;
   margin: 0;
 }
 
-.message-bubble.bot {
+.message-bubble.user {
   color: var(--text-primary);
+  line-height: 1.6;
 }
+
+/* .message-bubble.bot {
+  color: var(--text-primary);
+  line-height: 1.6;
+} */
 
 /* Add the new paragraph spacing here */
 .message-bubble.bot p {
   margin-top: 0rem;
   margin-bottom: 0rem;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.message-bubble.bot ol {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  line-height: 1.6;
 }
 
 .message-bubble.bot p:first-child {
@@ -153,9 +169,10 @@ body {
 }
 
 .message-bubble.user {
-  background-color: #444;
-  border-radius: 0.5rem;
-}
+  background-color: #393838;
+  border-radius: 25px;
+  padding: 0.7rem 1.3rem 0.7rem 1.3rem;
+  }
 
 .typing {
   font-size: 0.875rem;
@@ -169,37 +186,62 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 3rem);
-  max-width: 840px;
-  padding: 1rem 1.5rem;
-  margin-bottom: 0.5%;
-  background-color: var(--background-dark);
+  max-width: 950px;
+  padding: 2rem 3rem;
+  margin-bottom: 0%;
+  /* background-color: var(--background-dark); */
   border-top: 1px solid #444;
   display: flex;
   gap: 0.5rem;
   z-index: 100;
-  backdrop-filter: blur(8px);
-  box-sizing: border-box;
+  backdrop-filter: blur(12px);
 }
 
 @media (min-width: 840px) {
   .input-area {
-    left: calc(50% + 8rem);
-    width: min(840px, calc(100% - 20rem - 3rem));
+    transform: translateX(-55%);
+    left: calc(55% + 8rem);
+    width: min(950px, calc(100% - 20rem - 6rem));
   }
 }
+
+
+/* .input-field {
+  flex: 1;
+  background-color: var(--surface-dark);
+  border: 1px solid #444;
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1.3rem
+} */
 
 .input-field {
   flex: 1;
   background-color: var(--surface-dark);
   border: 1px solid #444;
   color: var(--text-primary);
-  padding: 0.75rem;
-  border-radius: 4px;
+  font-family: inherit;
+  padding: 1em 1em;
+  border-radius: 10px;
   outline: none;
-  font-size: 1rem
+  font-size: 1rem;
+  line-height: 1.4;
+  resize: none;
+  max-height: calc(1.4em * 8);
+  overflow-y: auto;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 
-.send-button {
+@media (max-width: 480px) {
+  .input-field {
+    max-height: calc(1.4em * 3); /* max 3 lines */
+  }
+}
+
+/* .send-button {
   background-color: var(--primary-color);
   color: black;
   padding: 0.75rem 1.5rem;
@@ -208,6 +250,22 @@ body {
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.3s ease;
+  font-size: 1.1rem;
+  font-weight: bold;
+} */
+
+.send-button {
+  background-color: var(--primary-color);
+  color: black;
+  padding: 0.45rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+  font-weight: bold;
+  align-self: center; /* aligns better with textarea */
 }
 
 .send-button:hover {
@@ -237,15 +295,26 @@ body {
   background-color: #ffa13b;
 }
 
+.message-bubble{
+    font-family: inherit;
+}
+
 .message-bubble h1,
 .message-bubble h2,
 .message-bubble h3 {
+  padding-top: 1rem;
   font-weight: bold;
   margin: 1rem 0 0.5rem;
+}
+
+.message-bubble h1 strong,
+.message-bubble h2 strong,
+.message-bubble h3 strong{
   color: #ffb347;
 }
 
 .message-bubble ul {
+
   padding-left: 1.25rem;
   list-style-type: disc;
 }
@@ -254,11 +323,22 @@ body {
   margin: 0.25rem 0;
 }
 
+.message-bubble li strong{
+  color: #f7dab2;
+}
+/* 
+.message-bubble p {
+  padding-top: 1rem;
+} */
+
+
 .message-bubble strong {
-  color: #ffd280;
+  color: #f7dab2;
+  font-weight: bold;
 }
 
 .message-bubble code {
+  letter-spacing: 0rem; 
   background-color: #1f1f1f;
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
@@ -285,6 +365,7 @@ body {
 
 @media (max-width: 840px) {
   .messages-wrapper {
+    
     padding: 1rem;
   }
 

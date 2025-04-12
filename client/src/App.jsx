@@ -85,6 +85,14 @@ export default function App() {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
+  useEffect(() => {
+    const textarea = document.querySelector(".input-field");
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = Math.min(textarea.scrollHeight, 8 * 24) + "px";
+    }
+  }, [input]);
+
   const sendMessage = () => {
     if (!input.trim() || isTyping || socketRef.current.readyState !== 1) return;
     setMessages((prev) => [...prev, { from: "user", text: input }]);
@@ -160,17 +168,23 @@ export default function App() {
                       </div>
                     </div>
                   ))}
-                  {isTyping && <div className="typing">Bot is typing...</div>}
+                  {isTyping && <div className="typing">thinking...</div>}
                   <div ref={messagesEndRef} />
                 </div>
               </div>
               <div className="input-area">
-                <input
+                <textarea
                   className="input-field"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault(); // Prevents newline
+                      sendMessage();      // Sends message only if Shift is NOT pressed
+                    }
+                  }}
                   placeholder="Type your message..."
+                  rows={1}
                 />
                 <button
                   className="send-button"

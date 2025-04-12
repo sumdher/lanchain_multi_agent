@@ -1,0 +1,17 @@
+/* Header.css */
+.header {
+  background-color: var(--background-kinda-dark);
+  padding: 1rem;
+  border-bottom: 1px solid #444;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-title {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.55rem;
+  margin: 0;
+}

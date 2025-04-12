@@ -1,0 +1,35 @@
+/* Sidebar.css */
+.sidebar {
+  width: 16rem;
+  background-color: var(--surface-dark);
+  padding: 1.5rem;
+  display: none;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  margin: 0;
+  padding: 1rem 0 3rem 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-nav a {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.sidebar-nav a:hover {
+  color: var(--text-primary);
+}
+
+@media (min-width: 840px) {
+  .sidebar {
+    display: block;
+  }
+}

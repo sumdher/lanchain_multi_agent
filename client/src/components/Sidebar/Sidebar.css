@@ -33,3 +33,60 @@
     display: block;
   }
 }
+
+.file-upload-box {
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 1px solid #ccc;
+    background-color: var(--surface-dark);
+}
+
+.file-list {
+    margin: 0.5rem 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.file-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.file-name {
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.file-button,
+.load-button {
+    background-color: var(--primary-color);
+    color: black;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 700;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.file-button{ padding: 0px 12px; }
+
+.file-button:hover,
+.load-button:hover {
+    background-color: #ff9333;
+}
+
+.button-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}

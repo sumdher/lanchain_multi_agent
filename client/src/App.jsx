@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import './index.css';
+import CodeBlock from './CodeBlock';
+
 
 export default function App() {
   const [messages, setMessages] = useState([]);
@@ -66,7 +68,12 @@ export default function App() {
       setIsConnecting(false);
     };
   };
-
+  
+  function sanitizeMarkdown(markdown) {
+    return markdown
+      .replace(/```(\w*)[ \t]*([^\n])/g, '```$1\n$2')
+      .replace(/([^\n])```/g, '$1\n```');
+  }
   const stopAI = () => {
     if (socketRef.current && socketRef.current.readyState === 1) {
       socketRef.current.send("__STOP__");
@@ -74,9 +81,9 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
 
   const sendMessage = () => {
     if (!input.trim() || isTyping || socketRef.current.readyState !== 1) return;
@@ -131,7 +138,22 @@ export default function App() {
                     <div key={i} className={`message-row ${msg.from}`}>
                       <div className={`message-bubble ${msg.from}`}>
                         {msg.from === "bot" ? (
-                          <ReactMarkdown>{msg.text}</ReactMarkdown>
+                          <ReactMarkdown
+                            components={{
+                              code({ inline, className, children }) {
+                                const match = /language-(\w+)/.exec(className || "");
+                                const codeString = String(children).trim();
+
+                                if (!inline && match) {
+                                  return <CodeBlock language={match[1]} value={codeString} />;
+                                }
+
+                                return <code className={className}>{codeString}</code>;
+                              },
+                            }}
+                          >
+                            {msg.text}
+                          </ReactMarkdown>
                         ) : (
                           msg.text
                         )}

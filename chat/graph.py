@@ -28,8 +28,8 @@ class PydanticState(BaseModel):
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
-def init_graph(tid: str, sys_msg: str | None = None, human_msg: str | None = None) -> CompiledStateGraph:
-    memory = MemorySaver()
+def init_graph(tid: str, memory: MemorySaver, sys_msg: str | None = None, human_msg: str | None = None) -> CompiledStateGraph:
+    # memory = MemorySaver()
     graph_builder = StateGraph(PydanticState)
 
     tools = [tavily_search_tool, python_repl, lcel_codegen]

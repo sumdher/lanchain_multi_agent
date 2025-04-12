@@ -196,6 +196,7 @@ body {
   padding: 0.75rem;
   border-radius: 4px;
   outline: none;
+  font-size: 1rem
 }
 
 .send-button {

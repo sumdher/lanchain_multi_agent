@@ -29,7 +29,7 @@ def lcel_codegen(question: str) -> str:
         return "Failed to generate code. Try rephrasing your question."
     
     return (
-        f"**PREFIX:**\n{result.prefix}\n\n"
+        f"{result.prefix}\n\n"
         f"**IMPORTS:**\n```python\n{result.imports}\n```\n\n"
-        f"**CODE:**\n```python\n{result.code}\n```"
+        f"**CODE:**\n```python\n{result.code}\n```\n"
     )

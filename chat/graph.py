@@ -44,6 +44,7 @@ def init_graph(tid: str, memory: MemorySaver, sys_msg: str | None = None, human_
     def chatbot(state: State):
         return {"messages": [llm_with_tools.invoke(state["messages"])]}
 
+
     graph_builder.add_node("chatbot", chatbot)
     tool_node = ToolNode(tools=tools)
     graph_builder.add_node("tools", tool_node)
@@ -61,5 +62,3 @@ def init_graph(tid: str, memory: MemorySaver, sys_msg: str | None = None, human_
         graph.ainvoke({"messages": [HumanMessage(content=human_msg)]}, config)
 
     return graph
-
-

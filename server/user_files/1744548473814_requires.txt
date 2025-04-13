@@ -1,0 +1,9 @@
+pyspark
+apache-sedona
+ipywidgets
+geopandas
+pandas
+keplergl
+fiona
+nbformat
+black

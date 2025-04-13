@@ -92,6 +92,7 @@ async def chat_websocket(websocket: WebSocket):
                         await websocket.send_text(f"[Mode changed to: {mode_key}]")
                     else:
                         await websocket.send_text(f"[Error] Unknown mode: {mode_key}")
+                    await websocket.send_text("[[END]]")
                     continue
 
                 if user_input == "__CONTEXT__":
@@ -123,11 +124,20 @@ async def chat_websocket(websocket: WebSocket):
 
                         await graph.ainvoke({"messages": [SystemMessage(content=context_block)]}, config)
 
-                    summary_prompt = ""
+                    summary_prompt = """
+                        Please confirm that you have successfully loaded the uploaded files in context.
+
+                        Instructions:
+                        1. Acknowledge that you can access the files.
+                        2. List all filenames currently loaded.
+                        3. Do not provide summaries or content from the files.
+
+                        If any files are unreadable or in a binary format, please indicate which ones and disregard them.
+                        """
                     if readable:
-                        summary_prompt += "You've been uploaded some files. Just confirm if you can read them. Keep them in memeory, I will ask about them later. Don't summarise. I just need an acknowledgement status and the filenames loaded so far. List all (also prev ones)"
+                        summary_prompt += "All good."
                     if unreadable and not readable:
-                        summary_prompt = "The files I uploaded seem to be binary or unreadable. Ignore those."
+                        summary_prompt = "The files I uploaded seem to be binary or unreadable. Disregard them."
 
                     if summary_prompt:
                         response = await graph.ainvoke({"messages": [HumanMessage(content=summary_prompt)]}, config)
@@ -136,7 +146,7 @@ async def chat_websocket(websocket: WebSocket):
                         await websocket.send_text(f"[[LOADED::{','.join(readable)}]]")
 
                         # Then send the LLM response
-                        await websocket.send_text(reply_text)
+                        await websocket.send_text(reply_text + "\n")
                         await websocket.send_text("[[END]]")
 
                     else:

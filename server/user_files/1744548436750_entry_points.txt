@@ -1,0 +1,2 @@
+[console_scripts]
+geoenricher = geoenricher.scripts.prep:main

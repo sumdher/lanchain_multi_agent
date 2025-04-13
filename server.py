@@ -125,7 +125,7 @@ async def chat_websocket(websocket: WebSocket):
 
                     summary_prompt = ""
                     if readable:
-                        summary_prompt += "You've been uploaded some files. Just confirm if you can read them. Keep them in memeory, I will ask about them later. Don't summarise. I just need an acknowledgement status and the filenames loaded."
+                        summary_prompt += "You've been uploaded some files. Just confirm if you can read them. Keep them in memeory, I will ask about them later. Don't summarise. I just need an acknowledgement status and the filenames loaded so far. List all (also prev ones)"
                     if unreadable and not readable:
                         summary_prompt = "The files I uploaded seem to be binary or unreadable. Ignore those."
 

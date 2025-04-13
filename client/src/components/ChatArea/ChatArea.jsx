@@ -1,10 +1,9 @@
-// ChatArea.jsx
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from './CodeBlock';
 import './ChatArea.css';
 
-export default function ChatArea({ messages, isTyping }) {
+export default function ChatArea({ messages, isTyping, isLoadingContext }) {
     return (
         <div className="chat-area">
             <div className="messages-wrapper">
@@ -18,6 +17,7 @@ export default function ChatArea({ messages, isTyping }) {
                             </div>
                         </div>
                     )}
+
                     {messages.map((msg, i) => (
                         <div key={i} className={`message-row ${msg.from}`}>
                             <div className={`message-bubble ${msg.from}`}>
@@ -41,6 +41,15 @@ export default function ChatArea({ messages, isTyping }) {
                             </div>
                         </div>
                     ))}
+
+                    {isLoadingContext && (
+                        <div className="message-row bot">
+                            <div className="message-bubble bot">
+                                loading files to context...
+                            </div>
+                        </div>
+                    )}
+
                     {isTyping && <div className="typing">thinking...</div>}
                 </div>
             </div>

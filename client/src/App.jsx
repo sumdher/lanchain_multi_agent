@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
 import ChatArea from "./components/ChatArea/ChatArea";
@@ -13,40 +13,38 @@ export default function App() {
   const [isConnecting, setIsConnecting] = useState(false);
   const socketRef = useRef(null);
   const [loadedKeys, setLoadedKeys] = useState(new Set());
-
+  const [isLoadingContext, setIsLoadingContext] = useState(false);
 
   const connectToLangGraph = () => {
     setIsConnecting(true);
     const socket = new WebSocket("ws://127.0.0.1:4580/ws/chat");
     socketRef.current = socket;
 
-    let botBuffer = "";
-
     socket.onmessage = (event) => {
       const chunk = event.data;
 
       if (chunk === "[[END]]") {
         setIsTyping(false);
+        setIsLoadingContext(false);
         return;
       }
 
       if (chunk.startsWith("[[LOADED::")) {
         const loadedList = chunk.replace("[[LOADED::", "").replace("]]", "").split(",");
         setLoadedKeys(prev => new Set([...prev, ...loadedList]));
+        setIsLoadingContext(true);
         return;
       }
 
-      botBuffer += chunk;
-
+      // Normal bot message logic
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.from === "bot") {
           const updated = [...prev];
           updated[updated.length - 1] = { ...last, text: last.text + chunk };
           return updated;
-        } else {
-          return [...prev, { from: "bot", text: chunk }];
         }
+        return [...prev, { from: "bot", text: chunk }];
       });
 
       setIsTyping(true);
@@ -90,6 +88,8 @@ export default function App() {
         loadedKeys={loadedKeys}
         setLoadedKeys={setLoadedKeys}
         socketRef={socketRef}
+        isLoadingContext={isLoadingContext}
+        setIsLoadingContext={setIsLoadingContext}
       />
       <div className="main">
         <Header />
@@ -105,7 +105,11 @@ export default function App() {
           </div>
         ) : (
           <>
-            <ChatArea messages={messages} isTyping={isTyping} />
+            <ChatArea
+              messages={messages}
+              isTyping={isTyping}
+              isLoadingContext={isLoadingContext}
+            />
             <InputArea
               input={input}
               setInput={setInput}

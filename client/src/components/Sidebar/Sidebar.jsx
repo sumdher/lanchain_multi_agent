@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import './Sidebar.css';
 
-export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
+export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef, isLoadingContext, setIsLoadingContext }) {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileMap, setFileMap] = useState({});
-    // const [loadDisabled, setLoadDisabled] = useState(true);
+    const [loadingContext, setLoadingContext] = useState(false);
 
     const handleFileUpload = async (event) => {
         const files = Array.from(event.target.files);
@@ -41,11 +41,13 @@ export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
     };
 
     const handleAddToContext = () => {
-        console.log("SocketRef in Sidebar: ", socketRef?.current);
         if (socketRef?.current) {
+            setIsLoadingContext(true);  // show loading state
             socketRef.current.send("__CONTEXT__");
         }
     };
+
+
 
     const handleDeleteFile = async (key, index) => {
         const formData = new FormData();
@@ -120,13 +122,20 @@ export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
                     <button
                         className="load-button"
                         disabled={
-                            // true
-                            uploadedFiles.length === 0 || uploadedFiles.every(file => loadedKeys.has(file.name))
+                            isLoadingContext || uploadedFiles.length === 0 || uploadedFiles.every(file => loadedKeys.has(file.name))
                         }
                         onClick={handleAddToContext}
                     >
-                        Load to Context
+                        {isLoadingContext ? (
+                            <>
+                                <span className="spinner" /> Loading
+                            </>
+                        ) : (
+                            "Load to Context"
+                        )}
                     </button>
+
+
                 </div>
             </div>
         </aside>

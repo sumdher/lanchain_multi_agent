@@ -52,6 +52,7 @@
   padding: 0.7rem 1.3rem;
   color: var(--text-primary);
   line-height: 1.6;
+  max-width: 700px;
 }
 
 .message-bubble.bot p,
@@ -84,13 +85,15 @@
 .message-bubble h2,
 .message-bubble h3 {
   padding-top: 1rem;
+  padding-bottom: 1rem;
   font-weight: bold;
-  margin: 1rem 0 0.5rem;
+  margin: 1rem 0 1.5rem;
 }
 
 .message-bubble h1 strong,
 .message-bubble h2 strong,
 .message-bubble h3 strong {
+  padding-bottom: 1rem;
   color: #ffb347;
 }
 

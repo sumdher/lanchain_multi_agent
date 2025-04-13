@@ -12,6 +12,8 @@ export default function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const socketRef = useRef(null);
+  const [loadedKeys, setLoadedKeys] = useState(new Set());
+
 
   const connectToLangGraph = () => {
     setIsConnecting(true);
@@ -25,6 +27,12 @@ export default function App() {
 
       if (chunk === "[[END]]") {
         setIsTyping(false);
+        return;
+      }
+
+      if (chunk.startsWith("[[LOADED::")) {
+        const loadedList = chunk.replace("[[LOADED::", "").replace("]]", "").split(",");
+        setLoadedKeys(prev => new Set([...prev, ...loadedList]));
         return;
       }
 
@@ -78,7 +86,11 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      <Sidebar
+        loadedKeys={loadedKeys}
+        setLoadedKeys={setLoadedKeys}
+        socketRef={socketRef}
+      />
       <div className="main">
         <Header />
         {!isConnected ? (

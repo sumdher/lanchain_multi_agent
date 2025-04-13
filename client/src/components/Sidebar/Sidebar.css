@@ -90,3 +90,12 @@
     gap: 1rem;
     margin-top: 1rem;
 }
+
+.delete-btn {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: red;
+    margin-left: auto;
+    cursor: pointer;
+}

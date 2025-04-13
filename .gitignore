@@ -27,3 +27,7 @@ client/*.sln
 client/*.sw?
 
 
+# SERVER
+
+server/user_files
+server/env

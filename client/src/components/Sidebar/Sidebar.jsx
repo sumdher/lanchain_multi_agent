@@ -4,7 +4,7 @@ import './Sidebar.css';
 export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileMap, setFileMap] = useState({});
-    const [loadDisabled, setLoadDisabled] = useState(true);
+    // const [loadDisabled, setLoadDisabled] = useState(true);
 
     const handleFileUpload = async (event) => {
         const files = Array.from(event.target.files);
@@ -31,7 +31,7 @@ export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
                 }
 
                 setFileMap(updatedMap);
-                setLoadDisabled(false);
+                // setLoadDisabled(false);
             } else {
                 alert("Failed to upload files");
             }
@@ -118,8 +118,11 @@ export default function Sidebar({ loadedKeys, setLoadedKeys, socketRef }) {
                         Add Files
                     </label>
                     <button
-                        disabled={loadDisabled}
                         className="load-button"
+                        disabled={
+                            // true
+                            uploadedFiles.length === 0 || uploadedFiles.every(file => loadedKeys.has(file.name))
+                        }
                         onClick={handleAddToContext}
                     >
                         Load to Context

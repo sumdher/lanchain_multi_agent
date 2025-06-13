@@ -17,7 +17,6 @@ export default function ChatArea({ messages, isTyping, isLoadingContext }) {
                             </div>
                         </div>
                     )}
-
                     {messages.map((msg, i) => (
                         <div key={i} className={`message-row ${msg.from}`}>
                             <div className={`message-bubble ${msg.from}`}>
@@ -35,21 +34,20 @@ export default function ChatArea({ messages, isTyping, isLoadingContext }) {
                                             }
                                         }}
                                     >
-                                        {msg.text}
+                                    {msg.text}
                                     </ReactMarkdown>
                                 ) : msg.text}
                             </div>
                         </div>
                     ))}
-
                     {isLoadingContext && (
                         <div className="message-row bot">
                             <div className="message-bubble bot">
                                 loading files to context...
                             </div>
                         </div>
-                    )}
-
+                    )
+                    }
                     {isTyping && <div className="typing">thinking...</div>}
                 </div>
             </div>

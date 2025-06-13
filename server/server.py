@@ -1,3 +1,4 @@
+# server.py
 import asyncio
 from contextlib import suppress
 from fastapi import UploadFile, File, FastAPI, WebSocket, WebSocketDisconnect, Form
@@ -5,13 +6,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 from typing import List
-from chat.graph import init_graph
-from chat.modes import modes
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.runnables.config import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 import time
 import shutil
+
+from chat.graph import init_graph
+from chat.modes import modes
+
 
 app = FastAPI()
 

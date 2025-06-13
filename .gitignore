@@ -1,3 +1,4 @@
+..*
 .assets
 .venv
 .env
@@ -25,9 +26,11 @@ client/*.ntvs*
 client/*.njsproj
 client/*.sln
 client/*.sw?
-
+*.zip
 
 # SERVER
-
+test*
 server/user_files
 server/env
+__pycache__/
+*.py[cod]

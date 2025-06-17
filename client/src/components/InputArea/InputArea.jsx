@@ -1,4 +1,4 @@
-// InputArea.jsx
+// components/InputArea.jsx
 import React from "react";
 import './InputArea.css';
 

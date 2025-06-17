@@ -31,6 +31,13 @@ client/*.sw?
 # SERVER
 test*
 server/user_files
+server/sandbox/data/.gitkeep
+server/sandbox/data/output/*
+server/sandbox/!data/output/.gitkeep
+server/sandbox/jupyter_sessions/*
+
 server/env
 __pycache__/
+server/__pycache__/
+server/chat/__pycache__/
 *.py[cod]

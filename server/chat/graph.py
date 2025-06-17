@@ -32,21 +32,21 @@ def init_graph(tid: str, memory: MemorySaver, sys_msg: str | None = None, human_
     # memory = MemorySaver()
     graph_builder = StateGraph(PydanticState)
 
-    tools = [tavily_search_tool, python_repl, lcel_codegen]
+    tools_list = [tavily_search_tool, python_repl, lcel_codegen]
 
     llm = ChatDeepSeek(
         model="deepseek-chat",
         temperature=0.0,
         streaming=True,
     )
-    llm_with_tools = llm.bind_tools(tools)
+    llm_with_tools = llm.bind_tools(tools_list)
 
     def chatbot(state: State):
         return {"messages": [llm_with_tools.invoke(state["messages"])]}
 
+    tool_node = ToolNode(tools=tools_list)
 
     graph_builder.add_node("chatbot", chatbot)
-    tool_node = ToolNode(tools=tools)
     graph_builder.add_node("tools", tool_node)
 
     graph_builder.add_conditional_edges("chatbot", tools_condition)

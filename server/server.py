@@ -128,14 +128,14 @@ async def chat_websocket(websocket: WebSocket):
                         await graph.ainvoke({"messages": [SystemMessage(content=context_block)]}, config)
 
                     summary_prompt = """
-                        Please confirm that you have successfully loaded the uploaded files in context.
+                        Confirm that you have successfully loaded the files in context.
 
-                        Instructions:
+                        System Prompt:
                         1. Acknowledge that you can access the files.
                         2. List all filenames currently loaded.
                         3. Do not provide summaries or content from the files.
-
-                        If any files are unreadable or in a binary format, please indicate which ones and disregard them.
+                        4. If any files are unreadable or in a binary format, indicate which ones.
+                        5. IMPORTANT: 
                         """
                     if readable:
                         summary_prompt += "All good."
@@ -145,10 +145,7 @@ async def chat_websocket(websocket: WebSocket):
                     if summary_prompt:
                         response = await graph.ainvoke({"messages": [HumanMessage(content=summary_prompt)]}, config)
                         reply_text = response["messages"][-1].content
-                        # Send filenames that were loaded (for frontend to update UI)
                         await websocket.send_text(f"[[LOADED::{','.join(readable)}]]")
-
-                        # Then send the LLM response
                         await websocket.send_text(reply_text + "\n")
                         await websocket.send_text("[[END]]")
 
@@ -194,7 +191,6 @@ async def chat_websocket(websocket: WebSocket):
                 current_stream_task.cancel()
                 with suppress(asyncio.CancelledError):
                     await current_stream_task
-
 
     try:
         receive_task = asyncio.create_task(receive_messages())

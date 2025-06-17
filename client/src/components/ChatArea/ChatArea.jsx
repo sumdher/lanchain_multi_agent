@@ -1,3 +1,4 @@
+// components/ChatArea.jsx
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from './CodeBlock';
@@ -12,7 +13,7 @@ export default function ChatArea({ messages, isTyping, isLoadingContext }) {
                         <div className="message-row bot">
                             <div className="message-bubble bot welcome-message">
                                 <ReactMarkdown>
-                                    {"**What can I help with today?**\n\nAsk me anything, and I'll do my best to assist you!"}
+                                    {"**Connected**\n\nChat started"}
                                 </ReactMarkdown>
                             </div>
                         </div>

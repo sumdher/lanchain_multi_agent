@@ -4,6 +4,7 @@ from langchain_core.tools import tool
 from chat.code_ass_graph import code_ass_help
 from langchain_experimental.utilities import PythonREPL
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_community.tools.riza.command import ExecPython
 
 tavily_search_tool = TavilySearchResults(max_results=1)
 
@@ -16,7 +17,7 @@ def python_repl(code: str) -> str:
     try:
         result = repl.run(code)
     except BaseException as e:
-        print  (f"Failed to execute. Error: {repr(e)}")
+        print (f"Failed to execute. Error: {repr(e)}")
         # Rewrite the code and rerun it
     return f"{result}"
 

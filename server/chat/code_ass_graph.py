@@ -196,7 +196,6 @@ workflow.add_conditional_edges(
     decide_to_finish,
     {
         "end": END,
-        # If not ending, we go back to "generate"
         "generate": "generate",
     },
 )

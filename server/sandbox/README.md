@@ -1,4 +1,4 @@
-# Sandboxed Jupyter Code Execution
+<!-- # Sandboxed Jupyter Code Execution
 
 A FastAPI-powered application that enables Python code execution in a sandboxed environment. Each user session initializes a new Jupyter notebook kernel, ensuring isolated and stateful code execution. This project is containerized using Docker, making it easy to deploy and run anywhere.
 
@@ -184,15 +184,6 @@ Ensure the Docker container is running on port 5002 before executing the script.
 - Data Persistence: Notebooks and outputs are saved in the mounted volumes for persistence.
 
 
-## Contributions
-
-
-Feel free to submit pull requests or open issues for enhancements and bug fixes. 
-Contributions are always welcome!
-
-## License
-
-This project is licensed under the MIT License.
 
 ---
 
@@ -204,4 +195,4 @@ This project is licensed under the MIT License.
 
 
 
-
+ -->

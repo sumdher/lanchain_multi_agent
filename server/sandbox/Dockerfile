@@ -22,13 +22,11 @@ ENV DATA_DIR=/mnt/data
 ENV JUPYTER_SESSIONS_DIR=/mnt/jupyter_sessions
 
 # Copy the FastAPI server script into the container
-COPY fastapi_jupyter_server.py /workspace/fastapi_jupyter_api.py
+COPY sandbox.py /workspace/sandbox.py
 
-# Set the working directory
 WORKDIR /workspace
 
-# Expose the FastAPI server port
 EXPOSE 5002
 
 # Use Python to start the FastAPI server
-CMD ["python3.12", "-m", "uvicorn", "fastapi_jupyter_api:app", "--host", "0.0.0.0", "--port", "5002"]
+CMD ["python3.12", "-m", "uvicorn", "sandbox:app", "--host", "0.0.0.0", "--port", "5002"]

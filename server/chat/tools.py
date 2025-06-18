@@ -4,7 +4,8 @@ from langchain_core.tools import tool
 from chat.code_ass_graph import code_ass_help
 from langchain_experimental.utilities import PythonREPL
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_community.tools.riza.command import ExecPython
+from sandbox.start_sandbox import run_container
+
 
 tavily_search_tool = TavilySearchResults(max_results=1)
 

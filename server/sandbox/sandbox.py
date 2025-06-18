@@ -263,7 +263,8 @@ async def install_package(request: InstallPackageRequest):
     try:
         # First try to install the package
         result = subprocess.run(
-            ["pip", "install", request.package_name],
+            # ["pip", "install", request.package_name],
+            ["pip", "install", "--no-cache-dir", "--user", request.package_name],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
